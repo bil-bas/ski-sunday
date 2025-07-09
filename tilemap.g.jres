@@ -16,6 +16,12 @@
         "tilemapTile": true,
         "displayName": "Time flag"
     },
+    "tile3": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIAAAAAAABQJQIAAAAAAERVAAAAAAAAd0QAAAAAAGB2BwAAAAAAiGgAAAAAAACqiv////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "Time flag0"
+    },
     "level1": {
         "id": "level1",
         "mimeType": "application/mkcd-tilemap",

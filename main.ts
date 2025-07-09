@@ -22,8 +22,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, l
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag`, function (sprite, location) {
     if (!(Flying)) {
         tiles.setTileAt(location, assets.tile`transparency16`)
-        info.changeCountdownBy(2)
         music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
+        info.changeScoreBy(100)
     }
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.builtin.field0, function (sprite, location) {
@@ -44,6 +44,16 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (spr
         })
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag0`, function (sprite, location) {
+    if (!(Flying)) {
+        tiles.setTileAt(location, assets.tile`transparency16`)
+        music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
+        info.changeScoreBy(250)
+    }
+})
+function create_avalanche () {
+	
+}
 let Flying = false
 let Default_speed = 0
 let mySprite: Sprite = null
@@ -54,11 +64,12 @@ scene.cameraFollowSprite(mySprite)
 Default_speed = 20
 mySprite.vy = Default_speed
 controller.moveSprite(mySprite, 50, 0)
-info.startCountdown(20)
 game.setGameOverEffect(false, effects.dissolve)
 game.setGameOverEffect(true, effects.confetti)
 game.setGameOverMessage(false, "You ran out of time!")
 Flying = false
+info.setScore(0)
+create_avalanche()
 game.onUpdate(function () {
     if (Flying) {
         mySprite.setImage(assets.image`Jumping`)
