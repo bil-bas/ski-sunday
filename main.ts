@@ -61,7 +61,7 @@ function create_avalanche () {
         mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
         mySprite2.x = 15 * index
         mySprite2.bottom = randint(1, 12)
-        mySprite2.vy = Default_speed - 1
+        mySprite2.vy = Default_speed - 2
     }
 }
 function stumble () {
@@ -75,7 +75,6 @@ function stumble () {
     })
 }
 let projectile: Sprite = null
-let animal_speed = 0
 let mySprite2: Sprite = null
 let Flying = false
 let Default_speed = 0
@@ -107,28 +106,44 @@ game.onUpdate(function () {
 })
 game.onUpdateInterval(1500, function () {
     if (Math.percentChance(50)) {
-        animal_speed = 50
+        projectile = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . b 5 b . . . 
+            . . . . . . . . . b 5 b . . . . 
+            . . . . . . b b b b b b . . . . 
+            . . . . . b b 5 5 5 5 5 b . . . 
+            . b b b b b 5 5 5 5 5 5 5 b . . 
+            . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+            . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+            . . b d 5 5 b 1 f f 5 4 4 c . . 
+            b b d b 5 5 5 d f b 4 4 4 4 4 b 
+            b d d c d 5 5 b 5 4 4 4 4 4 b . 
+            c d d d c c b 5 5 5 5 5 5 5 b . 
+            c b d d d d d 5 5 5 5 5 5 5 b . 
+            . c d d d d d d 5 5 5 5 5 d b . 
+            . . c b d d d d d 5 5 5 b b . . 
+            . . . c c c c c c c c b b . . . 
+            `, 50, 0)
     } else {
-        animal_speed = -50
+        projectile = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . b 5 b . . . . . . . . . . 
+            . . . . b 5 b . . . . . . . . . 
+            . . . . b b b b b b . . . . . . 
+            . . . b 5 5 5 5 5 b b . . . . . 
+            . . b 5 5 5 5 5 5 5 b b b b b . 
+            . . b 5 5 5 5 5 5 5 5 b 5 d b . 
+            . . f 4 d 5 f 1 d 5 b 5 5 b . . 
+            . . c 4 4 5 f f 1 b 5 5 d b . . 
+            b 4 4 4 4 4 b f d 5 5 5 b d b b 
+            . b 4 4 4 4 4 5 b 5 5 d c d d b 
+            . b 5 5 5 5 5 5 5 b c c d d d c 
+            . b 5 5 5 5 5 5 5 d d d d d b c 
+            . b d 5 5 5 5 5 d d d d d d c . 
+            . . b b 5 5 5 d d d d d b c . . 
+            . . . b b c c c c c c c c . . . 
+            `, -50, 0)
     }
-    projectile = sprites.createProjectileFromSide(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . b 5 b . . . 
-        . . . . . . . . . b 5 b . . . . 
-        . . . . . . b b b b b b . . . . 
-        . . . . . b b 5 5 5 5 5 b . . . 
-        . b b b b b 5 5 5 5 5 5 5 b . . 
-        . b d 5 b 5 5 5 5 5 5 5 5 b . . 
-        . . b 5 5 b 5 d 1 f 5 d 4 f . . 
-        . . b d 5 5 b 1 f f 5 4 4 c . . 
-        b b d b 5 5 5 d f b 4 4 4 4 4 b 
-        b d d c d 5 5 b 5 4 4 4 4 4 b . 
-        c d d d c c b 5 5 5 5 5 5 5 b . 
-        c b d d d d d 5 5 5 5 5 5 5 b . 
-        . c d d d d d d 5 5 5 5 5 d b . 
-        . . c b d d d d d 5 5 5 b b . . 
-        . . . c c c c c c c c b b . . . 
-        `, animal_speed, 0)
     projectile.y += mySprite.y
 })
 game.onUpdateInterval(100, function () {
