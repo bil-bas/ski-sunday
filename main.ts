@@ -101,9 +101,9 @@ mySprite = sprites.create(assets.image`Straight`, SpriteKind.Player)
 scene.setBackgroundColor(1)
 tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(mySprite)
-Default_speed = 20
+Default_speed = 25
 mySprite.vy = Default_speed
-controller.moveSprite(mySprite, 50, 0)
+controller.moveSprite(mySprite, 25, 0)
 game.setGameOverEffect(false, effects.dissolve)
 game.setGameOverEffect(true, effects.confetti)
 Flying = false
