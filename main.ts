@@ -36,14 +36,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.builtin.field0, function (sprite,
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (sprite, location) {
     if (!(Flying)) {
         tiles.setTileAt(location, assets.tile`transparency16`)
-        mySprite.vy = 5
-        scene.cameraShake(4, 500)
-        mySprite.startEffect(effects.spray)
-        music.play(music.melodyPlayable(music.knock), music.PlaybackMode.InBackground)
-        timer.after(1000, function () {
-            mySprite.vy = Default_speed
-            effects.clearParticles(mySprite)
-        })
+        stumble()
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.avalanche, function (sprite, otherSprite) {
@@ -57,6 +50,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag0`, function (sprite
         info.changeScoreBy(250)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    if (!(Flying)) {
+        sprites.destroy(otherSprite)
+        stumble()
+    }
+})
 function create_avalanche () {
     for (let index = 0; index <= 10; index++) {
         mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
@@ -65,6 +64,18 @@ function create_avalanche () {
         mySprite2.vy = Default_speed - 1
     }
 }
+function stumble () {
+    mySprite.vy = 5
+    scene.cameraShake(4, 500)
+    mySprite.startEffect(effects.spray)
+    music.play(music.melodyPlayable(music.knock), music.PlaybackMode.InBackground)
+    timer.after(1000, function () {
+        mySprite.vy = Default_speed
+        effects.clearParticles(mySprite)
+    })
+}
+let projectile: Sprite = null
+let animal_speed = 0
 let mySprite2: Sprite = null
 let Flying = false
 let Default_speed = 0
@@ -93,6 +104,32 @@ game.onUpdate(function () {
             mySprite.setImage(assets.image`Straight`)
         }
     }
+})
+game.onUpdateInterval(1500, function () {
+    if (Math.percentChance(50)) {
+        animal_speed = 50
+    } else {
+        animal_speed = -50
+    }
+    projectile = sprites.createProjectileFromSide(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . b 5 b . . . 
+        . . . . . . . . . b 5 b . . . . 
+        . . . . . . b b b b b b . . . . 
+        . . . . . b b 5 5 5 5 5 b . . . 
+        . b b b b b 5 5 5 5 5 5 5 b . . 
+        . b d 5 b 5 5 5 5 5 5 5 5 b . . 
+        . . b 5 5 b 5 d 1 f 5 d 4 f . . 
+        . . b d 5 5 b 1 f f 5 4 4 c . . 
+        b b d b 5 5 5 d f b 4 4 4 4 4 b 
+        b d d c d 5 5 b 5 4 4 4 4 4 b . 
+        c d d d c c b 5 5 5 5 5 5 5 b . 
+        c b d d d d d 5 5 5 5 5 5 5 b . 
+        . c d d d d d d 5 5 5 5 5 d b . 
+        . . c b d d d d d 5 5 5 b b . . 
+        . . . c c c c c c c c b b . . . 
+        `, animal_speed, 0)
+    projectile.y += mySprite.y
 })
 game.onUpdateInterval(100, function () {
     info.changeScoreBy(1)
