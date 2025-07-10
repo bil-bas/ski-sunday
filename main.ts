@@ -3,6 +3,9 @@ enum ActionKind {
     Idle,
     Jumping
 }
+namespace SpriteKind {
+    export const avalanche = SpriteKind.create()
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     if (!(Flying)) {
         tiles.setTileAt(location, assets.tile`transparency16`)
@@ -27,7 +30,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag`, function (sprite,
     }
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.builtin.field0, function (sprite, location) {
-    info.setScore(info.countdown() * 1000)
     game.setGameOverScoringType(game.ScoringType.HighScore)
     game.gameOver(true)
 })
@@ -44,6 +46,10 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (spr
         })
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.avalanche, function (sprite, otherSprite) {
+    game.setGameOverMessage(false, "Lost in avalanche!")
+    game.gameOver(false)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag0`, function (sprite, location) {
     if (!(Flying)) {
         tiles.setTileAt(location, assets.tile`transparency16`)
@@ -52,8 +58,14 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag0`, function (sprite
     }
 })
 function create_avalanche () {
-	
+    for (let index = 0; index <= 10; index++) {
+        mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
+        mySprite2.x = 15 * index
+        mySprite2.bottom = randint(1, 12)
+        mySprite2.vy = Default_speed - 1
+    }
 }
+let mySprite2: Sprite = null
 let Flying = false
 let Default_speed = 0
 let mySprite: Sprite = null
@@ -66,7 +78,6 @@ mySprite.vy = Default_speed
 controller.moveSprite(mySprite, 50, 0)
 game.setGameOverEffect(false, effects.dissolve)
 game.setGameOverEffect(true, effects.confetti)
-game.setGameOverMessage(false, "You ran out of time!")
 Flying = false
 info.setScore(0)
 create_avalanche()
@@ -82,4 +93,7 @@ game.onUpdate(function () {
             mySprite.setImage(assets.image`Straight`)
         }
     }
+})
+game.onUpdateInterval(100, function () {
+    info.changeScoreBy(1)
 })
