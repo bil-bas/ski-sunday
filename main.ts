@@ -56,6 +56,24 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         stumble()
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`crevice`, function (sprite, location) {
+    if (!(Flying)) {
+        Flying = true
+        controller.moveSprite(mySprite, 0, 0)
+        music.play(music.melodyPlayable(music.powerDown), music.PlaybackMode.InBackground)
+        mySprite.setPosition(location.x, location.y)
+        mySprite.vy = 0
+        mySprite.scale = 0.75
+        timer.after(1000, function () {
+            mySprite.scale = 0.5
+            timer.after(1000, function () {
+                mySprite.scale = 0.25
+                game.setGameOverMessage(false, "Fallen into crevice")
+                game.gameOver(false)
+            })
+        })
+    }
+})
 function create_avalanche () {
     for (let index = 0; index <= 10; index++) {
         mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
