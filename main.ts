@@ -40,8 +40,10 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (spr
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.avalanche, function (sprite, otherSprite) {
-    game.setGameOverMessage(false, "Lost in avalanche!")
-    game.gameOver(false)
+    if (!(Flying)) {
+        game.setGameOverMessage(false, "Burried in avalanche!")
+        game.gameOver(false)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Time flag0`, function (sprite, location) {
     if (!(Flying)) {
@@ -63,13 +65,17 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`crevice`, function (sprite, l
         music.play(music.melodyPlayable(music.powerDown), music.PlaybackMode.InBackground)
         mySprite.setPosition(location.x, location.y)
         mySprite.vy = 0
-        mySprite.scale = 0.75
-        timer.after(1000, function () {
-            mySprite.scale = 0.5
-            timer.after(1000, function () {
-                mySprite.scale = 0.25
-                game.setGameOverMessage(false, "Fallen into crevice")
-                game.gameOver(false)
+        mySprite.sayText("Oops!")
+        mySprite.startEffect(effects.blizzard, 5000)
+        timer.after(600, function () {
+            mySprite.scale = 0.75
+            timer.after(600, function () {
+                mySprite.scale = 0.5
+                timer.after(600, function () {
+                    mySprite.scale = 0.25
+                    game.setGameOverMessage(false, "Fallen into crevasse!")
+                    game.gameOver(false)
+                })
             })
         })
     }
@@ -122,8 +128,8 @@ game.onUpdate(function () {
         }
     }
 })
-game.onUpdateInterval(1500, function () {
-    if (Math.percentChance(50)) {
+game.onUpdateInterval(5000, function () {
+    if (Math.percentChance(80)) {
         projectile = sprites.createProjectileFromSide(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . b 5 b . . . 
@@ -141,28 +147,42 @@ game.onUpdateInterval(1500, function () {
             . c d d d d d d 5 5 5 5 5 d b . 
             . . c b d d d d d 5 5 5 b b . . 
             . . . c c c c c c c c b b . . . 
-            `, 50, 0)
+            `, randint(-20, 20), 45)
     } else {
         projectile = sprites.createProjectileFromSide(img`
-            . . . . . . . . . . . . . . . . 
-            . . . b 5 b . . . . . . . . . . 
-            . . . . b 5 b . . . . . . . . . 
-            . . . . b b b b b b . . . . . . 
-            . . . b 5 5 5 5 5 b b . . . . . 
-            . . b 5 5 5 5 5 5 5 b b b b b . 
-            . . b 5 5 5 5 5 5 5 5 b 5 d b . 
-            . . f 4 d 5 f 1 d 5 b 5 5 b . . 
-            . . c 4 4 5 f f 1 b 5 5 d b . . 
-            b 4 4 4 4 4 b f d 5 5 5 b d b b 
-            . b 4 4 4 4 4 5 b 5 5 d c d d b 
-            . b 5 5 5 5 5 5 5 b c c d d d c 
-            . b 5 5 5 5 5 5 5 d d d d d b c 
-            . b d 5 5 5 5 5 d d d d d d c . 
-            . . b b 5 5 5 d d d d d b c . . 
-            . . . b b c c c c c c c c . . . 
-            `, -50, 0)
+            ..............ccccccccc........
+            ............cc555555555cc......
+            ...........c5555555555555c.....
+            ..........c55555555555555dc....
+            .........c555555555555b5bdc....
+            .........555bc1555555555bdcccc.
+            ........c555ccc55555555bbdccddc
+            ........c555bcb5555555ccddcdddc
+            .......c555555555551ccccddbdddc
+            .......c555555b555c1cccbddbbdbc
+            .......c5555555bbc33333ddddbcc.
+            .......c555555555bc333555ddbc..
+            .......c5555555555555555555c...
+            .......cd555555555555cccc555c..
+            .......cd55555555555c555c555c..
+            .......cdd555555555b5555b555c..
+            .......cddd55555ddbb555bb555c..
+            .......cdddd55555555555b5555c..
+            .......cddddd5555555ddb5555dc..
+            c......cdddddd555555555555dcc..
+            cc...ccddddddd555555555555dc...
+            cdccccdddddd555555d55555ddcc...
+            cdddddddddbd5555555ddddddccccc.
+            ccdddddddbb55555555bddddccbddc.
+            .ccddddddbd55555555bdddccdddc..
+            ..cccddddbd5555555cddcccddbc...
+            ....ccccccd555555bcccc.cccc....
+            .........cc555555bc............
+            .........cc55555555c...........
+            ..........cccccccccc...........
+            `, randint(-20, 20), 35)
     }
-    projectile.y += mySprite.y
+    projectile.x = mySprite.x + randint(-32, 32)
 })
 game.onUpdateInterval(100, function () {
     info.changeScoreBy(1)
