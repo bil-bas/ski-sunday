@@ -33,6 +33,14 @@ scene.onOverlapTile(SpriteKind.Player, sprites.builtin.field0, function (sprite,
     game.setGameOverScoringType(game.ScoringType.HighScore)
     game.gameOver(true)
 })
+function create_avalanche () {
+    for (let index = 0; index <= 10; index++) {
+        mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
+        mySprite2.x = 15 * index
+        mySprite2.bottom = randint(1, 12)
+        mySprite2.vy = Default_speed - 2
+    }
+}
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.saplingPine, function (sprite, location) {
     if (!(Flying)) {
         tiles.setTileAt(location, assets.tile`transparency16`)
@@ -80,14 +88,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`crevice`, function (sprite, l
         })
     }
 })
-function create_avalanche () {
-    for (let index = 0; index <= 10; index++) {
-        mySprite2 = sprites.create(assets.image`avalanche`, SpriteKind.avalanche)
-        mySprite2.x = 15 * index
-        mySprite2.bottom = randint(1, 12)
-        mySprite2.vy = Default_speed - 2
-    }
-}
 function stumble () {
     mySprite.vy = 5
     scene.cameraShake(4, 500)
